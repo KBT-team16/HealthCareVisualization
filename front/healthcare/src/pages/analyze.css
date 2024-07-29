@@ -1,0 +1,19 @@
+.body-container {
+    width: auto;
+    height: auto;
+    border: 1px solid black;
+    padding: 0 50px;
+    margin: 50px 0;
+}
+
+.analyze-title {
+    display: inline-block
+}
+
+.analyze-title {
+    display: inline-block;
+}
+
+.history-btn {
+    display: inline-block;
+}
