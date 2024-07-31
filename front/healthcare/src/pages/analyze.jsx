@@ -2,20 +2,23 @@ import React from "react";
 import './analyze.css';
 import '../App.css';
 import { Link } from "react-router-dom";
-import RecWorkout from "../components/RecWorkout";
-import RecDiet from "../components/RecDiet";
+//import RecWorkout from "../components/RecWorkout";
+//import RecDiet from "../components/RecDiet";
+import Recommendation from "../components/Recommendation";
+import AnalysisChart from "../components/AnalysisChart";
+import Comparison from "../components/Comparison";
 
 const Analyze = () => {
     return (
         <div className="body">
             <div className="body-container">
-                <InbodyGraph />
+              <AnalysisChart />
             </div>
             <div className="body-container">
-                <RecommandSolution />
+                <Recommendation />
             </div>
             <div className="body-container">
-                <CompareInbody />
+                <Comparison />
             </div>
         </div>
     );
@@ -41,20 +44,6 @@ function InbodyGraph() {
         </div>
 
         </>       
-    )
-}
-
-function RecommandSolution() {
-    return (
-        <>
-        <div className="analyze-title">
-            <h3>추천 솔루션</h3>
-        </div>
-        <div className="analyze-body">
-            <RecWorkout />
-            <RecDiet />
-        </div>
-        </>
     )
 }
 
