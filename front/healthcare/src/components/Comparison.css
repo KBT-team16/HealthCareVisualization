@@ -1,20 +1,18 @@
-.comparison {
-    text-align: left;
-  }
-  
-  .comparison-image img {
-    width: 100%;
-    border-radius: 8px;
-    margin: 20px 0;
-  }
-  
-  .recommendations {
-    text-align: center;
-  }
-  
-  .recommendation-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  
+.member-cards {
+  display: flex;
+  flex-wrap: wrap; /* 카드가 줄 바꿈될 수 있도록 설정 */
+  justify-content: space-around;
+  gap: 20px; /* 카드 간의 간격을 설정합니다. */
+}
+
+.chart-placeholder {
+  width: 100%;
+  height: 300px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  color: #aaa;
+  margin: 20px 0;
+}

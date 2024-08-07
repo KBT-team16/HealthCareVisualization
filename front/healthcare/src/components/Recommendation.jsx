@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
 import './Recommendation.css';
-//import axios from 'axios';
 import SolutionCard from './SolutionCard';
+import axios from 'axios';
+import runningImage from '/Users/minseopark/Desktop/KTBproject/Healthcare/HealthCareVisualization/front/healthcare/src/img/running.jpg'
 
-const Recommendation = ({inbodyScore}) => {
-    // const [solutions, setSolutions] = useState([]);
+const Recommendation = ({ inbodyScore }) => {
+    //const [solutions, setSolutions] = useState([]);
 
-    // 이부분 잠시 넣은거
-    //const Recommendation = ({ inbodyScore }) => {
     const [solutions, setSolutions] = useState([
-        { title: '추천 운동 1', imgSrc: 'image1.jpg', description: 'This is a description for 운동 1.' },
-        { title: '추천 운동 2', imgSrc: 'image2.jpg', description: 'This is a description for 운동 2.' },
-        { title: '추천 운동 3', imgSrc: 'image3.jpg', description: 'This is a description for 운동 3.' },
-        { title: '추천 식단 1', imgSrc: 'image4.jpg', description: 'This is a description for 식단 1.' },
-        { title: '추천 식단 2', imgSrc: 'image5.jpg', description: 'This is a description for 식단 2.' },
-        { title: '추천 식단 3', imgSrc: 'image6.jpg', description: 'This is a description for 식단 3.' }
+        { title: '추천 운동 1', imgSrc: runningImage, description: '추천 운동 1에 대한 설명' },
+        { title: '추천 운동 2', imgSrc: runningImage, description: '추천 운동 2에 대한 설명' },
+        { title: '추천 운동 3', imgSrc: runningImage, description: '추천 운동 3에 대한 설명' },
+        { title: '추천 식단 1', imgSrc: runningImage, description: '추천 식단 1에 대한 설명' },
+        { title: '추천 식단 2', imgSrc: runningImage, description: '추천 식단 2에 대한 설명' },
+        { title: '추천 식단 3', imgSrc: runningImage, description: '추천 식단 3에 대한 설명' }
         ]);
-/*
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchSolutions = async () => {
-            const response = await axios.get('http://http://localhost:5000/api/solutions');
-            setSolutions(response.data);
+            try {
+                const response = await axios.get('http://localhost:5000/api/solutions');
+                setSolutions(response.data);
+            } catch (error) {
+                console.error('Error fetching solutions data:', error);
+            }
         };
 
         fetchSolutions();
@@ -33,6 +35,8 @@ const Recommendation = ({inbodyScore}) => {
             return '현재 중등도 비만 상태이므로, 중간 강도의 운동 및 식단을 추천드립니다.';
         } else if (score >= 20) { // 경도 비만 일때,
             return '현재 경도 비만 상태 이므로, 고강도 운동 및 식단을 추천드립니다.';
+        } else {
+            return '현재 정상 체중 상태입니다.';
         }
     };
 
@@ -51,23 +55,24 @@ const Recommendation = ({inbodyScore}) => {
 
     return (
         <div>
-          <h3>추천 솔루션</h3>
-          <p>{getRecommendationMessage(30)}</p>
-          
-          <div>
-            <h5>추천 운동</h5>
-            <div className="solution-container">
-              {renderSolutions('추천 운동')}
+            <h3>추천 솔루션</h3>
+            <p style={{textAlign: "center", fontStyle: "italic"}}>{getRecommendationMessage(inbodyScore)}</p>
+
+            <div>
+                <h4 style={{margin: "20px 0"}}>추천 운동</h4>
+                <div className="solution-container">
+                    {renderSolutions('추천 운동')}
+                </div>
             </div>
-          </div>
-    
-          <div>
-            <h5>추천 식단</h5>
-            <div className="solution-container">
-              {renderSolutions('추천 식단')}
+
+            <div>
+                <h4 style={{margin: "20px 0"}}>추천 식단</h4>
+                <div className="solution-container">
+                    {renderSolutions('추천 식단')}
+                </div>
             </div>
-          </div>
         </div>
-      );
-    };
+    );
+};
+
 export default Recommendation;

@@ -1,19 +1,28 @@
-/*.solution-card {
-    width: 30%;
-    background-color: white;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .solution-card img {
-    width: 100%;
-    border-radius: 4px;
-  }
-  
-  .solution-card p {
-    margin: 10px 0 0;
-  }
-  */
+.solution-card {
+  width: 18rem;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.solution-card-img {
+  width: 100%;
+  height: 180px; /* 원하는 높이로 설정 */
+  object-fit: cover; /* 이미지 비율 유지하며 잘라내기 */
+  border-top-left-radius: 8px; /* 카드 상단 좌우 모서리 반경 */
+  border-top-right-radius: 8px; /* 카드 상단 좌우 모서리 반경 */
+}
+
+.solution-card-body {
+  padding: 16px;
+}
+
+.solution-card-title {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.solution-card-text {
+  font-size: 1rem;
+  color: #555;
+}
