@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const InbodyChart = () => {
+
+    // 테스트를 위해 임의로 넣은 값들
+    
     const userData = {
         user_number: "CB5111727AD7D353E0535F00A8C0F052",
         weight: 79,
@@ -15,6 +18,32 @@ const InbodyChart = () => {
         fat_control: -11.6,
         muscle_control: 0.3
     };
+    
+    // api를 통해서 데이터를 가져오는 부분
+    /*
+    const [userData, setUserData] = useState(null);
+    // setUserData는 상태를 업데이트하는 함수
+
+    // useEffect 훅을 사용하여 컴포넌트가 처음 렌더링될 때 API 호출
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('API_ENDPOINT'); // API_ENDPOINT를 실제 API URL로 변경
+                const data = await response.json();
+                setUserData(data); // 가져온 데이터를 userDate 상태에 저장한다
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // API 데이터가 아직 로드되지 않았다면 로딩 표시를 반환
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
+    */
 
     const actualValues = [
         userData.weight,

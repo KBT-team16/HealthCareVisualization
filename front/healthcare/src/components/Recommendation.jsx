@@ -34,11 +34,37 @@ import stirFriedVege from '../imgSolution/stirFriedVege.jpeg';
 
 const Recommendation = () => {
     
-    // 이 부분에서 데이터를 가져와야 한다. 성별과 체지방률 데이터 필요
+    // 이 부분에서 데이터를 가져와야 한다. 성별과 체지방률 데이터 필요 -> 테스트를 위한 코드
+    
     const [inbodyData, setInbodyData] = useState({
         body_fat_percentage: 50, // 테스트를 위한 예시 값
         gender: 'female' // 테스트를 위한 예시 값
     });
+    
+    /*
+    const [inbodyData, setInbodyData] = useState({
+        body_fat_percentage: null, // 초기값 null
+        gender: '' // 초기값 빈 문자열
+    });
+    */
+    useEffect(() => { // API에서 데이터를 가져옴
+        const fetchInbodyData = async () => {
+            try {
+                const response = await fetch('API_ENDPOINT_URL'); // 이 부분에 실제 데이터를 가져올 api 주소 적기
+                const data = await response.json(); // JSON 응답을 파싱
+
+                // API에서 가져온 데이터로 상태 업데이트
+                setInbodyData({
+                    body_fat_percentage: data.body_fat_percentage,
+                    gender: data.sex === 'F' ? 'female' : 'male'
+                });
+            } catch (error) {
+                console.error('Error fetching inbody data:', error);
+            }
+        };
+
+        fetchInbodyData(); // 함수 호출
+    }, []);
 
     const lowIntensityExercises = [
         { title: '걷기', imgSrc: walkL, description: '- 하루 30분 ~ 1시간\n- 심폐 기능을 개선하고 혈액 순환을 촉진하는 저강도 운동입니다.'},
