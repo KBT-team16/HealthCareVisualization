@@ -1,153 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const InbodyChart = () => {
-    const [chartData, setChartData] = useState({
-        labels: [],
-        datasets: []
-    });
+    const userData = {
+        user_number: "CB5111727AD7D353E0535F00A8C0F052",
+        weight: 79,
+        body_fat: 21.8,
+        skeletal_muscle_mass: 32,
+        inbody_score: 68,
+        weight_control: -11.3,
+        fat_control: -11.6,
+        muscle_control: 0.3
+    };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('/api/inbody/user/CAD4E5E5AE8D7CACE0535F00A8C075E0');
-                const data = response.data;
-                console.log("Fetched data : ", data);
+    const actualValues = [
+        userData.weight,
+        userData.body_fat,
+        userData.skeletal_muscle_mass,
+        userData.inbody_score
+    ];
 
-                if (data && data.length > 0) {
-                    const lastData = data[data.length - 1];
+    const targetValues = [
+        userData.weight + userData.weight_control,
+        userData.body_fat + userData.fat_control,
+        userData.skeletal_muscle_mass + userData.muscle_control,
+        null
+    ];
 
-                    const mappedData = {
-                        userNumber: lastData.user_number,
-                        date: lastData.date,
-                        time: lastData.time,
-                        sex: lastData.sex,
-                        birthYear: lastData.birth_year,
-                        weight: lastData.weight,
-                        bodyFat: lastData.body_fat,
-                        skeletalMuscleMass: lastData.skeletal_muscle_mass,
-                        bodyFatPercentage: lastData.body_fat_percentage,
-                        inbodyScore: lastData.inbody_score,
-                        weightControl: lastData.weight_control,
-                        fatControl: lastData.fat_control,
-                        muscleControl: lastData.muscle_control,
-                        basalMetabolicRate: lastData.basal_metabolic_rate,
-                        visceralFatLevel: lastData.visceral_fat_level,
-                        obesity: lastData.obesity
-                    };
-
-                    const actualValues = [
-                        mappedData.weight,
-                        mappedData.bodyFat,
-                        mappedData.skeletalMuscleMass,
-                        mappedData.inbodyScore
-                    ];
-                    const targetValues = [
-                        mappedData.weight + mappedData.weightControl,
-                        mappedData.bodyFat + mappedData.fatControl,
-                        mappedData.skeletalMuscleMass + mappedData.muscleControl,
-                        null // Inbody score has no control value
-                    ];
-
-                    setChartData({
-                        labels: ['체중', '체지방량', '골격근량', '인바디 점수'],
-                        datasets: [
-                            {
-                                label: 'Actual Values',
-                                data: actualValues,
-                                backgroundColor: 'blue',
-                            },
-                            {
-                                label: 'Target Values',
-                                data: targetValues,
-                                backgroundColor: 'red',
-                                barThickness: 12,
-                                hoverBackgroundColor: 'rgba(255, 0, 0, 0.7)'
-                            }
-                        ]
-                    });
-                } else {
-                    // 데이터가 없을 경우 빈 데이터셋으로 초기화
-                    setChartData({
-                        labels: ['체중', '체지방량', '골격근량', '인바디 점수'],
-                        datasets: [
-                            {
-                                label: 'Actual Values',
-                                data: [0, 0, 0, 0],
-                                backgroundColor: 'blue',
-                            },
-                            {
-                                label: 'Target Values',
-                                data: [0, 0, 0, null],
-                                backgroundColor: 'red',
-                                barThickness: 12,
-                                hoverBackgroundColor: 'rgba(255, 0, 0, 0.7)'
-                            }
-                        ]
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching data', error);
-                // 데이터 로딩 실패 시 빈 데이터셋으로 초기화
-                setChartData({
-                    labels: ['체중', '체지방량', '골격근량', '인바디 점수'],
-                    datasets: [
-                        {
-                            label: '현재 몸 상태',
-                            data: [0, 0, 0, 0],
-                            backgroundColor: 'blue',
-                        },
-                        {
-                            label: '목표치',
-                            data: [0, 0, 0, null],
-                            backgroundColor: 'red',
-                            barThickness: 12,
-                            hoverBackgroundColor: 'rgba(255, 0, 0, 0.7)'
-                        }
-                    ]
-                });
+    const chartData = {
+        labels: ['체중', '체지방량', '골격근량', '인바디 점수'],
+        datasets: [
+            {
+                label: '현재 몸 상태',
+                data: actualValues,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 0.3,
+                barThickness: 30,
+                hoverBackgroundColor: 'rgba(255, 159, 64, 0.2)',
+                hoverBorderColor: 'rgb(255, 159, 64)',
+                hoverBorderWidth: 0.3
+            },
+            {
+                label: '목표치',
+                data: targetValues,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 0.3,
+                barThickness: 30,
+                hoverBackgroundColor: 'rgba(75, 192, 192, 0.2)',
+                hoverBorderColor: 'rgb(75, 192, 192)',
+                hoverBorderWidth: 0.3
             }
-        };
+        ]
+    };
 
-        fetchData();
-    }, []);
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Inbody Data Visualization',
+            },
+        },
+    };
 
     return (
         <div>
-            <h2>Inbody Data Visualization</h2>
-            <Bar 
-                data={chartData} 
-                options={{
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: false,
-                            text: 'Inbody Data Visualization',
-                        },
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: false,
-                                text: 'Measurement',
-                            },
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Value',
-                            },
-                        },
-                    },
-                }} 
-            />
+            <Bar data={chartData} options={options} />
         </div>
     );
 };

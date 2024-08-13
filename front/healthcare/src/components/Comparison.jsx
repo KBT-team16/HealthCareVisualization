@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Comparison.css';
 import MemberCard from './MemberCard';
 import profileImage from '/Users/minseopark/Desktop/KTBproject/Healthcare/HealthCareVisualization/front/healthcare/src/img/bear.jpeg';
+import ComparisonChart  from './ComparisonChart';
 
 const Comparison = ({ inbodyScore }) => {
   const [members, setMembers] = useState([
@@ -31,8 +32,7 @@ const Comparison = ({ inbodyScore }) => {
         비슷한 몸 상태를 가진 분들을 상위 30%에 위치해있습니다.
       </p>
       <div className="comparison-chart">
-        {/* 여기에 실제 Chart.js 또는 다른 차트 라이브러리를 사용할 수 있습니다 */}
-        <div className="chart-placeholder">집합군 비교 분석 그래프</div>
+        <ComparisonChart />
       </div>
       <div>
         <h5 style={{textAlign: "center", margin: "20px 0"}}>
