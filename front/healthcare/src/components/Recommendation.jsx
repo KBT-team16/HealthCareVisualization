@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Recommendation.css';
 import SolutionCard from './SolutionCard';
-// 이미지 임포트 (생략된 부분은 동일)
+
 import aerobics from '../imgSolution/aquaAerobics_low.jpeg';
 import badminton from '../imgSolution/badminton_medium.png';
 import bycycleL from '../imgSolution/bycycle_low.jpeg';
@@ -33,29 +33,22 @@ import vegeSoup from '../imgSolution/vegeSoup.jpeg';
 import stirFriedVege from '../imgSolution/stirFriedVege.jpeg';
 
 const Recommendation = () => {
-    
-    // 이 부분에서 데이터를 가져와야 한다. 성별과 체지방률 데이터 필요 -> 테스트를 위한 코드
-    
     const [inbodyData, setInbodyData] = useState({
-        body_fat_percentage: 50, // 테스트를 위한 예시 값
-        gender: 'female' // 테스트를 위한 예시 값
+        body_fat_percentage: null,
+        gender: ''
     });
-    
-    /*
-    const [inbodyData, setInbodyData] = useState({
-        body_fat_percentage: null, // 초기값 null
-        gender: '' // 초기값 빈 문자열
-    });
-    */
-    useEffect(() => { // API에서 데이터를 가져옴
+    const [exerciseRecommendations, setExerciseRecommendations] = useState([]);
+    const [dietRecommendations, setDietRecommendations] = useState([]);
+    const [message, setMessage] = useState('');
+
+    useEffect(() => {
         const fetchInbodyData = async () => {
             try {
-                const response = await fetch('API_ENDPOINT_URL'); // 이 부분에 실제 데이터를 가져올 api 주소 적기
-                const data = await response.json(); // JSON 응답을 파싱
+                const response = await fetch('http://localhost:8080/inbody-data/first');
+                const data = await response.json();
 
-                // API에서 가져온 데이터로 상태 업데이트
                 setInbodyData({
-                    body_fat_percentage: data.body_fat_percentage,
+                    body_fat_percentage: parseFloat(data.body_fat_percentage),
                     gender: data.sex === 'F' ? 'female' : 'male'
                 });
             } catch (error) {
@@ -63,7 +56,7 @@ const Recommendation = () => {
             }
         };
 
-        fetchInbodyData(); // 함수 호출
+        fetchInbodyData();
     }, []);
 
     const lowIntensityExercises = [
@@ -116,12 +109,7 @@ const Recommendation = () => {
         { title: '통곡물 밥과 두부 야채 볶음', imgSrc: tofuVege, description: '- 현미밥 1/2 공기와 두부 100g \n- 브로콜리, 당근, 양배추, 피망 \n- 저염 간장 또는 고추장 간장' }
     ];
 
-    const getRandomItems = (list) => {
-        const shuffled = list.sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, 3);
-    };
-
-    // 현재 몸 상태가 어떤 범주에 해당하는지 (정상체중, 저체중, 과체중, 비만)
+    // 카테고리 결정 함수
     const getCategory = (bodyFatPercentage, gender) => {
         if (gender === 'male') {
             if (bodyFatPercentage <= 6) return '저체중';
@@ -183,18 +171,19 @@ const Recommendation = () => {
         }
     };
 
-    const [exerciseRecommendations, setExerciseRecommendations] = useState([]);
-    const [dietRecommendations, setDietRecommendations] = useState([]);
-    const [message, setMessage] = useState('');
+    // 랜덤으로 3개 아이템 선택
+    const getRandomItems = (list) => {
+        const shuffled = list.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 3);
+    };
 
     useEffect(() => {
-        if (inbodyData && inbodyData.body_fat_percentage && inbodyData.gender) {
+        if (inbodyData.body_fat_percentage !== null && inbodyData.gender) {
             const category = getCategory(inbodyData.body_fat_percentage, inbodyData.gender);
             const exerciseRec = getExercise(category);
             const dietRec = getDiet(category);
             const messageRec = getMessage(category);
 
-            // 랜덤으로 3개의 항목을 선택
             const randomExercises = getRandomItems(exerciseRec);
             const randomDiets = getRandomItems(dietRec);
 
@@ -202,6 +191,7 @@ const Recommendation = () => {
             setDietRecommendations(randomDiets);
             setMessage(messageRec);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inbodyData]);
 
     const renderSolutions = (list) => {
@@ -216,19 +206,21 @@ const Recommendation = () => {
     };
 
     return (
-        <div style={{whiteSpace: 'pre-wrap'}}>
+        <div style={{ whiteSpace: 'pre-wrap' }}>
             <h3>추천 솔루션</h3>
-            <p style={{textAlign: "center", fontStyle: "italic", margin: "40px", fontSize: "17px", fontWeight: "bolder", color: "darkblue"}}>{message}</p>
+            <p style={{ textAlign: "center", fontStyle: "italic", margin: "40px", fontSize: "17px", fontWeight: "bolder", color: "darkblue" }}>
+                {message}
+            </p>
 
             <div>
-                <h4 style={{margin: "20px 0"}}>추천 운동</h4>
+                <h4 style={{ margin: "20px 0" }}>추천 운동</h4>
                 <div className="solution-container">
                     {renderSolutions(exerciseRecommendations)}
                 </div>
             </div>
 
             <div>
-                <h4 style={{margin: "20px 0"}}>추천 식단</h4>
+                <h4 style={{ margin: "20px 0" }}>추천 식단</h4>
                 <div className="solution-container">
                     {renderSolutions(dietRecommendations)}
                 </div>
