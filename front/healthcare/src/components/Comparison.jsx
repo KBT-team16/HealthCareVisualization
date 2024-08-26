@@ -24,7 +24,7 @@ const Comparison = ({ inbodyScore }) => {
   useEffect(() => { // API에서 데이터를 가져옴
     const fetchInbodyData = async () => {
         try {
-            const response = await fetch('API_ENDPOINT_URL'); // 이 부분에 실제 데이터를 가져올 api 주소 적기
+            const response = await fetch('http://localhost:8080/inbody-data/first'); // 이 부분에 실제 데이터를 가져올 api 주소 적기
             const data = await response.json(); // JSON 응답을 파싱
 
             // API에서 가져온 데이터로 상태 업데이트
