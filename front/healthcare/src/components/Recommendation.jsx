@@ -208,9 +208,9 @@ const Recommendation = () => {
     return (
         <div style={{ whiteSpace: 'pre-wrap' }}>
             <h3>추천 솔루션</h3>
-            <p style={{ textAlign: "center", fontStyle: "italic", margin: "40px", fontSize: "17px", fontWeight: "bolder", color: "darkblue" }}>
+            <h5 style={{ textAlign: "center", margin: "40px" }}>
                 {message}
-            </p>
+            </h5>
 
             <div>
                 <h4 style={{ margin: "20px 0" }}>추천 운동</h4>

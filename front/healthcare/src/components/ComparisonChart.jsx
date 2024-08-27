@@ -4,12 +4,12 @@ import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Filler);
 
-const ComparisonChart = () => {
+const ComparisonChart = ({ onPercentileCalculated }) => {
     const [inbodyScores, setInbodyScores] = useState([]);
     const [peopleCount, setPeopleCount] = useState([]);
     const [age, setAge] = useState(null);
     const [loading, setLoading] = useState(true); 
-    const myInbodyScore = 65; // 이 값은 나중에 입력받을 예정
+    const [myInbodyScore, setMyInbodyScore] = useState(null);
 
     useEffect(() => {
         // 나이 데이터를 먼저 가져오기
@@ -19,15 +19,17 @@ const ComparisonChart = () => {
                 const currentYear = new Date().getFullYear();
                 const calculatedAge = currentYear - parseInt(data.birth_year, 10);
                 setAge(calculatedAge);
+                setMyInbodyScore(parseInt(data.inbody_score));
+                
             })
             .catch(error => {
-                console.error("Error fetching age data:", error);
+                console.error("Error fetching age and inbody score data:", error);
                 setLoading(false);
             });
     }, []);
 
     useEffect(() => {
-        if (age !== null) {
+        if (age !== null && myInbodyScore !== null) {
             // 나이에 따른 API 주소 결정
             const ageGroup = Math.floor(age / 10) * 10; // 10대, 20대, 30대 등으로 그룹화
             const apiUrl = `http://localhost:8080/inbody-data/${ageGroup}`;
@@ -52,6 +54,15 @@ const ComparisonChart = () => {
 
                     setInbodyScores(sortedScores);
                     setPeopleCount(sortedCounts);
+
+                    // 상위 몇 %인지 계산
+                    const percentile = calculatePercentile(myInbodyScore, sortedScores, sortedCounts);
+
+                    // 부모 컴포넌트로 상위 % 전달
+                    if (onPercentileCalculated) {
+                        onPercentileCalculated(percentile);
+                    }
+
                     setLoading(false); // 데이터 로딩 완료
                 })
                 .catch(error => {
@@ -59,8 +70,23 @@ const ComparisonChart = () => {
                     setLoading(false); 
                 });
         }
-    }, [age]);
+    }, [age, myInbodyScore]);
 
+    const calculatePercentile = (score, scores, counts) => {
+        let cumulativeCount = 0;
+        let totalCount = counts.reduce((acc, count) => acc + count, 0);
+
+        for (let i = 0; i < scores.length; i++) {
+            if (scores[i] <= score) {
+                cumulativeCount += counts[i];
+            }
+        }
+
+        // 상위 몇 %인지 계산
+        const percentile = ((1 - (cumulativeCount / totalCount)) * 100).toFixed(2);
+        return percentile;
+    };
+    
     if (loading) {
         return <div>Loading...</div>; 
     }
