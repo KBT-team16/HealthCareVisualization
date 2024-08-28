@@ -6,6 +6,7 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const InbodyChart = () => {
     const [userData, setUserData] = useState(null);
+    const [chartOptions, setChartOptions] = useState({});
 
     useEffect(() => {
         fetch('http://localhost:8080/inbody-data/first')
@@ -19,7 +20,6 @@ const InbodyChart = () => {
                 const goalFat = parseFloat(data.body_fat) + parseFloat(data.fat_control);
                 const goalMuscle = parseFloat(data.skeletal_muscle_mass) + parseFloat(data.muscle_control);
 
-                // 데이터를 상태에 저장
                 setUserData({
                     weight,
                     bodyFat,
@@ -33,6 +33,56 @@ const InbodyChart = () => {
             .catch(error => {
                 console.error("Error fetching inbody data:", error);
             });
+
+        // 차트 옵션을 창 크기에 따라 조정
+        const handleResize = () => {
+            const width = window.innerWidth;
+            const isSmallScreen = width < 768;
+            
+            setChartOptions({
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: isSmallScreen ? 10 : 14,
+                            },
+                        },
+                    },
+                    title: {
+                        display: true,
+                        text: 'Inbody Data Visualization',
+                        font: {
+                            size: isSmallScreen ? 14 : 18,
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: isSmallScreen ? 10 : 14,
+                            },
+                        },
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                size: isSmallScreen ? 10 : 14,
+                            },
+                        },
+                    },
+                },
+                barThickness: isSmallScreen ? 10 : 30,
+            });
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // 처음 로드될 때도 적용
+
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     if (!userData) {
@@ -49,8 +99,7 @@ const InbodyChart = () => {
     const targetValues = [
         userData.goalWeight,
         userData.goalFat,
-        userData.goalMuscle,
-        null
+        userData.goalMuscle
     ];
 
     const chartData = {
@@ -62,7 +111,6 @@ const InbodyChart = () => {
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgb(255, 99, 132)',
                 borderWidth: 0.3,
-                barThickness: 30,
                 hoverBackgroundColor: 'rgba(255, 159, 64, 0.2)',
                 hoverBorderColor: 'rgb(255, 159, 64)',
                 hoverBorderWidth: 0.3
@@ -73,7 +121,6 @@ const InbodyChart = () => {
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgb(54, 162, 235)',
                 borderWidth: 0.3,
-                barThickness: 30,
                 hoverBackgroundColor: 'rgba(75, 192, 192, 0.2)',
                 hoverBorderColor: 'rgb(75, 192, 192)',
                 hoverBorderWidth: 0.3
@@ -81,22 +128,9 @@ const InbodyChart = () => {
         ]
     };
 
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Inbody Data Visualization',
-            },
-        },
-    };
-
     return (
-        <div>
-            <Bar data={chartData} options={options} />
+        <div style={{ width: '100%', height: '400px' }}>
+            <Bar data={chartData} options={chartOptions} />
         </div>
     );
 };

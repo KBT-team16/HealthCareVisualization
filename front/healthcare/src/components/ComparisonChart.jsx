@@ -10,6 +10,7 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
     const [age, setAge] = useState(null);
     const [loading, setLoading] = useState(true); 
     const [myInbodyScore, setMyInbodyScore] = useState(null);
+    const [chartOptions, setChartOptions] = useState({});
 
     useEffect(() => {
         // 나이 데이터를 먼저 가져오기
@@ -20,7 +21,6 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
                 const calculatedAge = currentYear - parseInt(data.birth_year, 10);
                 setAge(calculatedAge);
                 setMyInbodyScore(parseInt(data.inbody_score));
-                
             })
             .catch(error => {
                 console.error("Error fetching age and inbody score data:", error);
@@ -86,7 +86,71 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
         const percentile = ((1 - (cumulativeCount / totalCount)) * 100).toFixed(2);
         return percentile;
     };
-    
+
+    // 화면 크기에 맞게 차트 옵션 설정
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const isSmallScreen = width < 768;
+
+            setChartOptions({
+                responsive: true,
+                maintainAspectRatio: false,  
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: isSmallScreen ? 10 : 14,
+                            },
+                        },
+                    },
+                    title: {
+                        display: true,
+                        text: '인바디 점수 분포도',
+                        font: {
+                            size: isSmallScreen ? 14 : 18, // 작은 화면에서는 타이틀 폰트 크기 줄이기
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '인바디 점수',
+                            font: {
+                                size: isSmallScreen ? 10 : 14, 
+                            },
+                        },
+                        type: 'linear', 
+                        position: 'bottom',
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '사람 수',
+                            font: {
+                                size: isSmallScreen ? 10 : 14, 
+                            },
+                        },
+                        beginAtZero: true,
+                    },
+                },
+                elements: {
+                    point: {
+                        radius: isSmallScreen ? 4 : 8,
+                    },
+                },
+            });
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // 처음 로드될 때도 실행
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     if (loading) {
         return <div>Loading...</div>; 
     }
@@ -127,39 +191,9 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
         ]
     };
 
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: '인바디 점수 분포도',
-            },
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: '인바디 점수',
-                },
-                type: 'linear', // x축을 선형 스케일로 설정
-                position: 'bottom',
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: '사람 수',
-                },
-                beginAtZero: true,
-            },
-        },
-    };
-
     return (
-        <div>
-            <Line data={chartData} options={options} />
+        <div style={{ position: 'relative', width: '100%', height: '400px' }}> {/* 차트 크기 지정 */}
+            <Line data={chartData} options={chartOptions} />
         </div>
     );
 };
