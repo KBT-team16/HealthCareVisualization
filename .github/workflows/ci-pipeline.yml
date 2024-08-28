@@ -4,10 +4,10 @@ name: i6 CI frontend pipeline
 on:
   push:
     branches:
-      - main
+      - solution
   pull_request:
     branches:
-      - main
+      - solution
 
 jobs:
   build:
