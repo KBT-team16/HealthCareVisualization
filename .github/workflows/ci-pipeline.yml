@@ -47,3 +47,29 @@ jobs:
       - name: Verify Frontend Docker Hub
         # 이전 푸시한 커밋의 SHA 해시 태그로 이미지를 다운로드해 검증.
         run: docker pull --platform linux/arm64 ${{ secrets.DOCKER_REPOSITORY_FRONTEND }}:${{ github.sha }}
+
+  # k8s-manifest-repo 업데이트
+  update-manifest:
+    runs-on: ubuntu-latest
+    # build후 update-manifest가 실행
+    needs:
+      - build
+    steps:
+      - name: Checkout k8s-manifest-repo
+        run: |
+          git clone https://github.com/mochangil/k8s-manifest-boilerplate
+          cd k8s-manifest-boilerplate
+
+          git checkout dev || git checkout -b dev
+
+          # newName 필드 변경
+          sed -i 's|newName: mo991207/counter-react-app|newName: ${{ secrets.DOCKER_REPOSITORY_FRONTEND }}|g' overlays/dev/kustomization.yml'
+          # newTag 필드 변경
+          sed -i 's|newTag: .*|newTag: ${{ github.sha }}|g' overlays/dev/kustomization.yml
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Update image to mo991207/counter-springboot-app:${{ github.sha }}"
+
+          git push https://x-access-token:${{ secrets.TOKEN_K8S_REPO }}@github.com/mochangil/k8s-manifest-boilerplate dev
