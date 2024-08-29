@@ -61,7 +61,7 @@ jobs:
           cd k8s-manifest-boilerplate
 
           # newName 필드 변경
-          sed -i 's|newName: mo991207/counter-react-app|newName: ${{ secrets.DOCKER_REPOSITORY_FRONTEND }}|g' overlays/dev/kustomization.yml
+          sed -i 's|newName: mo991207/counter-react-app|newName: mo991207/counter-react-app:latest|g' overlays/dev/kustomization.yml
           # newTag 필드 변경
           sed -i 's|newTag: .*|newTag: ${{ github.sha }}|g' overlays/dev/kustomization.yml
 
