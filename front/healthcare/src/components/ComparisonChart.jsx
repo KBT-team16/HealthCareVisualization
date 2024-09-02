@@ -14,6 +14,8 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
 
     useEffect(() => {
         // 나이 데이터를 먼저 가져오기
+
+        // 환경변수 처리하기 : http://localhost:8080/
         fetch('http://localhost:8080/inbody-data/first')
             .then(response => response.json())
             .then(data => {

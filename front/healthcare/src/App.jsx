@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Analyze from './pages/analyze';
@@ -9,8 +9,17 @@ import SignIn from './pages/sign-in';
 import SignUp from './pages/sign-up';
 import Mainpage from './pages/mainpage';
 import Navbar from './components/Navbar';
+import ChatbotButton from './components/ChatbotButton';
+import ChatbotWindow from './components/ChatbotWindow';
 
 function App() {
+
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+
+  const toggleChatbot = () => {
+    setIsChatbotOpen(!isChatbotOpen);
+  };
+
   return (
     <BrowserRouter>
       <Navbar />
@@ -23,6 +32,8 @@ function App() {
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
       </Routes>
+      <ChatbotButton toggleChatbot={toggleChatbot} />
+      <ChatbotWindow isOpen={isChatbotOpen} toggleChatbot={toggleChatbot} />
     </BrowserRouter>
   );
 }

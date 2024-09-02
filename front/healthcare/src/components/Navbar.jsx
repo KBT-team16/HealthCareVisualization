@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 import './Navbar.css';
+import Complete from './Complete';
 
 function Navbar() {
     return (
@@ -11,15 +12,16 @@ function Navbar() {
             <div className="navList">
                 <ul>
                     <li>
-                        <Link className="nav-link" to='/notification'>Notice</Link>
-                    </li>
-                    <li>
                         <Link className="nav-link" to='/inbody/analyze'>Solution</Link>
                     </li>
                     <li>
                         <Link className="nav-link" to='/user/mypage'>My Page</Link>
                     </li>
                     <li>
+                        <Complete />
+                    </li>
+                    <li>
+                        
                         <button className='loginButton'>
                             <Link className="nav-link" to='/sign-in'>로그인</Link>
                         </button>

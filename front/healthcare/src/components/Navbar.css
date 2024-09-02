@@ -39,7 +39,7 @@
 }
 
 /* 일반 li 요소에만 hover 효과 적용 */
-.navList > ul > li:hover:not(.loginButton) {
+.navList > ul > li:hover:not(.loginButton.nav-bell) {
     border-bottom: 3px solid #0077b6; 
 }
 
