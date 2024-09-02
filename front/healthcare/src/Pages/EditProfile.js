@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../Components/apiClient";
+import apiClient from "../Components/apiClient"; // 위에서 설정한 Axios 인스턴스 사용
 import "../Components/navbar.css";
 
 export default function EditProfile() {
@@ -11,17 +11,15 @@ export default function EditProfile() {
 
   const navigate = useNavigate();
 
-  // 컴포넌트가 마운트될 때 회원 정보 가져오기
+  // 회원 정보 가져오기
   useEffect(() => {
     const fetchMemberInfo = async () => {
       try {
-        // apiClient 인스턴스를 사용하여 요청
         const response = await apiClient.get("/member/info");
         const { height, weight } = response.data;
-
         setHeight(height);
         setWeight(weight);
-        setLoading(false); // 로딩 완료
+        setLoading(false);
       } catch (err) {
         console.error("Failed to fetch member info:", err);
         setError("회원 정보를 가져오는 중 오류가 발생했습니다.");
@@ -32,36 +30,24 @@ export default function EditProfile() {
     fetchMemberInfo();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "height") setHeight(value);
-    else if (name === "weight") setWeight(value);
-  };
-
-  // 저장 버튼 클릭 시 처리 함수
+  // 저장 버튼 클릭 시 처리
   const handleSave = async () => {
     try {
-      // apiClient 인스턴스를 사용하여 요청
-      await apiClient.patch("/member/info", {
-        height,
-        weight,
-      });
-      console.log("저장 완료: ", { height, weight });
-      navigate("/mypage"); // 저장 후 마이페이지로 이동
+      await apiClient.patch("/member/info", { height, weight });
+      console.log("저장 완료:", { height, weight });
+      navigate("/mypage");
     } catch (err) {
       console.error("Failed to update member info:", err);
       setError("회원 정보를 수정하는 중 오류가 발생했습니다.");
     }
   };
 
-  const handleCancel = () => {
-    navigate("/mypage");
-  };
-
+  // 로딩 중일 때 화면에 표시할 내용
   if (loading) {
     return <div>로딩 중...</div>;
   }
 
+  // 오류 발생 시 화면에 표시할 내용
   if (error) {
     return <div>{error}</div>;
   }
@@ -76,7 +62,7 @@ export default function EditProfile() {
             type="number"
             name="height"
             value={height}
-            onChange={handleInputChange}
+            onChange={(e) => setHeight(e.target.value)}
             placeholder="키 입력"
           />
         </label>
@@ -86,16 +72,13 @@ export default function EditProfile() {
             type="number"
             name="weight"
             value={weight}
-            onChange={handleInputChange}
+            onChange={(e) => setWeight(e.target.value)}
             placeholder="몸무게 입력"
           />
         </label>
         <div className="button-group">
           <button onClick={handleSave} className="save-button">
             저장
-          </button>
-          <button onClick={handleCancel} className="cancel-button">
-            취소
           </button>
         </div>
       </div>

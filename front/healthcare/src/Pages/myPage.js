@@ -1,18 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../Components/navbar.css";
-import apiClient from "../Components/apiClient"; // API 요청을 위한 Axios 인스턴스
+import apiClient from "../Components/apiClient";
+import { useCookies } from "react-cookie";
 
 export default function Mypage() {
   const navigate = useNavigate();
+  const [cookies] = useCookies(["AuthorizationAccess"]); // 쿠키의 정확한 이름을 사용
 
   // 로그아웃 처리 함수
   const handleLogout = async () => {
     try {
-      // 로그아웃 시 클라이언트 측에서 JWT 토큰을 삭제
       localStorage.removeItem("accessToken");
-
-      // 로그아웃 후 로그인 페이지로 리다이렉트
       navigate("/login");
     } catch (error) {
       console.error("로그아웃 중 오류 발생:", error);
@@ -20,18 +19,65 @@ export default function Mypage() {
     }
   };
 
+  // 회원정보 수정 페이지로 이동
+  const handleEditProfile = async () => {
+    const token = cookies.AuthorizationAccess; // 쿠키에서 토큰 값 가져오기
+    console.log("Authorization Token: ", token);
+
+    if (!token) {
+      alert("토큰이 없습니다. 다시 로그인해주세요.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      await apiClient.get("/edit-profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      navigate("/edit-profile");
+    } catch (error) {
+      console.error("회원정보 수정 페이지로 이동 중 오류 발생:", error);
+    }
+  };
+
+  // 인바디 히스토리 조회 페이지로 이동
+  const handleInBodyHistory = async () => {
+    const token = cookies.AuthorizationAccess; // 쿠키에서 토큰 값 가져오기
+
+    if (!token) {
+      alert("토큰이 없습니다. 다시 로그인해주세요.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      await apiClient.get("/inbody-history", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate("/inbody-history");
+    } catch (error) {
+      console.error("인바디 히스토리 조회 페이지로 이동 중 오류 발생:", error);
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <a href="/">홈</a> {/* 로고나 메인 페이지 링크 */}
+        <a href="/">홈</a>
       </div>
       <div className="navbar-links">
-        <a href="/edit-profile">회원정보 수정</a>
-        <a href="/inbody-history">인바디 히스토리 조회</a>
-        <button
-          onClick={handleLogout}
-          className="navbar-link logout-button" // CSS 클래스 추가
-        >
+        <button onClick={handleEditProfile} className="navbar-link">
+          회원정보 수정
+        </button>
+        <button onClick={handleInBodyHistory} className="navbar-link">
+          인바디 히스토리 조회
+        </button>
+        <button onClick={handleLogout} className="navbar-link logout-button">
           로그아웃
         </button>
       </div>
