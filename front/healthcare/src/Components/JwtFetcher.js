@@ -12,24 +12,25 @@ const apiClient = axios.create({
 export default function JwtFetcher() {
   const [jwtToken, setJwtToken] = useState("");
 
-  const fetchJwtToken = async () => {
-    try {
-      // 쿠키를 포함한 요청을 백엔드로 전송
-      const response = await apiClient.get("/your-endpoint");
+  const fetchJwtToken = () => {
+    // 쿠키를 포함한 요청을 백엔드로 전송
+    axios
+      .get("http://localhost:8081/api/token", { withCredentials: true }) // 백엔드 URL로 직접 요청
+      .then((response) => {
+        // 응답에서 JWT를 헤더에서 추출
+        const token = response.headers["authorization"];
+        console.log("JWT Token:", token);
 
-      // 응답에서 JWT를 헤더에서 추출
-      const token = response.headers["authorization"];
-      console.log("JWT Token:", token);
-
-      // JWT를 상태로 저장하고 로컬 스토리지에 저장
-      if (token) {
-        const formattedToken = token.replace("Bearer ", "");
-        setJwtToken(formattedToken);
-        localStorage.setItem("accessToken", formattedToken);
-      }
-    } catch (error) {
-      console.error("Error fetching JWT token:", error);
-    }
+        // JWT를 상태로 저장하고 로컬 스토리지에 저장
+        if (token) {
+          const formattedToken = token.replace("Bearer ", "");
+          setJwtToken(formattedToken);
+          localStorage.setItem("accessToken", formattedToken);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching JWT token:", error);
+      });
   };
 
   return (

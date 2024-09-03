@@ -1,12 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../Components/navbar.css";
-import apiClient from "../Components/apiClient";
-import { useCookies } from "react-cookie";
+import apiClient from "../Components/AxiosInterceptor";
 
 export default function Mypage() {
   const navigate = useNavigate();
-  const [cookies] = useCookies(["AuthorizationAccess"]); // 쿠키의 정확한 이름을 사용
 
   // 로그아웃 처리 함수
   const handleLogout = async () => {
@@ -21,7 +19,8 @@ export default function Mypage() {
 
   // 회원정보 수정 페이지로 이동
   const handleEditProfile = async () => {
-    const token = cookies.AuthorizationAccess; // 쿠키에서 토큰 값 가져오기
+    // 로컬 스토리지에서 토큰 값 가져오기
+    const token = localStorage.getItem("accessToken");
     console.log("Authorization Token: ", token);
 
     if (!token) {
@@ -31,21 +30,20 @@ export default function Mypage() {
     }
 
     try {
-      await apiClient.get("/edit-profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
-      navigate("/edit-profile");
+      // 실제 API 요청을 보내도록 설정
+      const response = await apiClient.get("api/member/info");
+      if (response.status === 200) {
+        // 요청이 성공하면 페이지 이동
+        navigate("/edit-profile");
+      }
     } catch (error) {
       console.error("회원정보 수정 페이지로 이동 중 오류 발생:", error);
     }
   };
-
   // 인바디 히스토리 조회 페이지로 이동
   const handleInBodyHistory = async () => {
-    const token = cookies.AuthorizationAccess; // 쿠키에서 토큰 값 가져오기
+    // 로컬 스토리지에서 토큰 값 가져오기
+    const token = localStorage.getItem("accessToken");
 
     if (!token) {
       alert("토큰이 없습니다. 다시 로그인해주세요.");
@@ -54,14 +52,14 @@ export default function Mypage() {
     }
 
     try {
-      await apiClient.get("/inbody-history", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      navigate("/inbody-history");
+      // 실제 API 요청을 보내도록 설정
+      const response = await apiClient.get("api/member/inbody-history");
+      if (response.status === 200) {
+        // 요청이 성공하면 페이지 이동
+        navigate("/inbody-history");
+      }
     } catch (error) {
-      console.error("인바디 히스토리 조회 페이지로 이동 중 오류 발생:", error);
+      console.error("회원정보 수정 페이지로 이동 중 오류 발생:", error);
     }
   };
 

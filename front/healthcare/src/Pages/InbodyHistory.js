@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import apiClient from "../Components/apiClient";
+import apiClient from "../Components/AxiosInterceptor";
 import "../Components/navbar.css"; // 기존의 네비게이션 바 스타일링
 import "../Components/inbody.css";
 
@@ -13,7 +13,7 @@ export default function InBodyHistory() {
   useEffect(() => {
     const fetchInBodyHistories = async () => {
       try {
-        const response = await apiClient.get("/member/inbody-history"); // 서버에서 인바디 히스토리 가져오기
+        const response = await apiClient.get("api/member/inbody-history"); // 서버에서 인바디 히스토리 가져오기
         setInBodyHistories(response.data.inbodyHistories); // 상태에 저장 (inbodyHistories 리스트에 접근)
         setLoading(false); // 로딩 완료
       } catch (err) {

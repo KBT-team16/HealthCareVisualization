@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../Components/apiClient"; // 위에서 설정한 Axios 인스턴스 사용
+import apiClient from "../Components/AxiosInterceptor";
 import "../Components/navbar.css";
 
 export default function EditProfile() {
@@ -15,7 +15,7 @@ export default function EditProfile() {
   useEffect(() => {
     const fetchMemberInfo = async () => {
       try {
-        const response = await apiClient.get("/member/info");
+        const response = await apiClient.get("api/member/info");
         const { height, weight } = response.data;
         setHeight(height);
         setWeight(weight);

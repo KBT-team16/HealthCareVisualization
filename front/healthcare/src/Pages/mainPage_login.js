@@ -1,19 +1,10 @@
 import React from "react";
 import JwtFetcher from "../Components/JwtFetcher"; // 올바른 경로로 수정
-
 import { useLocation } from "react-router-dom";
 
 export default function MainPage_login() {
   const location = useLocation();
   const loginDto = location.state; // Register에서 전달된 state로부터 LoginDto를 가져옴
-
-  // loginDto가 존재하면 console에 출력
-  if (loginDto) {
-    console.log("Login Name:", loginDto.name);
-    console.log("Token Mapping:", loginDto.tokenMapping);
-  } else {
-    console.log("No login data available");
-  }
 
   return (
     <div>
