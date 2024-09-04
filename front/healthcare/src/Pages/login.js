@@ -8,12 +8,9 @@ export default function Login() {
   const navigate = useNavigate();
 
   // 네이버 로그인 요청을 보내는 함수
-  const handleKakaoLogin = () => {
-    // 백엔드의 카카오 OAuth 로그인 URL
-    const kakaoAuthUrl = "http://localhost:8081/oauth2/authorization/naver";
-    // OAuth 로그인 페이지로 이동
-    window.location.href = kakaoAuthUrl;
-  };
+  const onNaverLogin = () => {
+    window.location.href = "http://localhost:8081/oauth2/authorization/naver"
+}
 
   useEffect(() => {
     // 현재 URL에서 인증 성공 여부 확인
@@ -43,7 +40,7 @@ export default function Login() {
             <button
               type="button"
               className="social-login naver-login"
-              onClick={handleKakaoLogin}
+              onClick={onNaverLogin}
             >
               네이버 로그인
             </button>
