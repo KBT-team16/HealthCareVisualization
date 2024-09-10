@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+import { UserContext } from './UserContext.jsx';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const InbodyChart = () => {
+    const { userid } = useContext(UserContext);
     const [userData, setUserData] = useState(null);
     const [chartOptions, setChartOptions] = useState({});
 
@@ -83,7 +85,7 @@ const InbodyChart = () => {
         handleResize(); // 처음 로드될 때도 적용
 
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [userid]);
 
     if (!userData) {
         return <div>Loading...</div>;

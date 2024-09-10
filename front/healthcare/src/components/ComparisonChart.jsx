@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Filler } from 'chart.js';
+import { UserContext } from './UserContext.jsx';
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Filler);
 
 const ComparisonChart = ({ onPercentileCalculated }) => {
+    const { userid } = useContext(UserContext);
     const [inbodyScores, setInbodyScores] = useState([]);
     const [peopleCount, setPeopleCount] = useState([]);
     const [age, setAge] = useState(null);
@@ -28,7 +30,7 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
                 console.error("Error fetching age and inbody score data:", error);
                 setLoading(false);
             });
-    }, []);
+    }, [userid]);
 
     useEffect(() => {
         if (age !== null && myInbodyScore !== null) {
@@ -69,7 +71,7 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
                 })
                 .catch(error => {
                     console.error("Error fetching inbody data:", error);
-                    setLoading(false); 
+                    setLoading(false);
                 });
         }
     }, [age, myInbodyScore]);

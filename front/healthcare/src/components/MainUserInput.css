@@ -32,7 +32,7 @@ h6 {
     text-align: right; /* 오른쪽 정렬 */
 }
 
-.subitButton {
+.submitButton {
     width: 30%;
     font-size: 16px;
     background-color: #0077b6;
