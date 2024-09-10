@@ -1,0 +1,51 @@
+/* inbody.css */
+
+.container {
+  margin: 20px;
+  padding: 20px;
+  background-color: white; /* 흰색 배경 */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.inbody-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333; /* 제목 색상 */
+}
+
+.inbody-table-container {
+  overflow-x: auto; /* 테이블이 너무 클 경우 가로 스크롤 생성 */
+}
+
+.inbody-table {
+  width: 100%;
+  border-collapse: collapse; /* 테이블 경계선 제거 */
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
+.inbody-table th,
+.inbody-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd; /* 행 사이에 경계선 */
+  text-align: center;
+  color: #555; /* 텍스트 색상 */
+}
+
+.inbody-table th {
+  background-color: #f4f4f4; /* 테이블 헤더 배경색 */
+  font-weight: bold;
+}
+
+.inbody-table tr:nth-child(even) {
+  background-color: #fafafa; /* 짝수 행 배경색 */
+}
+
+.loading,
+.error,
+.no-data {
+  text-align: center;
+  color: #555;
+  margin: 20px 0;
+}
