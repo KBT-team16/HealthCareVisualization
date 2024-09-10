@@ -14,7 +14,7 @@ const OtherUsersInfo = () => {
     const [members1, setMembers1] = useState ([
       { title: '회원 1', imgSrc: profileImage, description: '운동 : 러닝'},
         { title: '회원 2', imgSrc: profileImage, description: '운동 : 러닝' },
-        { title: '회원 3', imgSrc: profileImage, description: '운동 : 러닝' }
+        { title: '회원 3', imgSrc: profileImage, description: '운동 : 러닝' },
     ])
 
     const renderMembersList = (membersList) => {

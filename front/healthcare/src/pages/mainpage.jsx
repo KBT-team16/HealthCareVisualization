@@ -6,8 +6,10 @@ import './analyze.css';
 function Mainpage() {
     return (
         <div className="body">
-            <div className="body-container">
+            <div className="body-container"  style={{marginBottom:"130px"}}>
                 <MainUserInput />
+            </div>
+            <div>
                 <OtherUsersInfo />
             </div>
         </div>

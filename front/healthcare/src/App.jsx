@@ -11,6 +11,7 @@ import Mainpage from './pages/mainpage';
 import Navbar from './components/Navbar';
 import ChatbotButton from './components/ChatbotButton';
 import ChatbotWindow from './components/ChatbotWindow';
+import { UserProvider } from './components/UserContext';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <UserProvider>
       <Navbar />
       <Routes>
         <Route path="/" element={<Mainpage />} />
@@ -34,6 +36,7 @@ function App() {
       </Routes>
       <ChatbotButton toggleChatbot={toggleChatbot} />
       <ChatbotWindow isOpen={isChatbotOpen} toggleChatbot={toggleChatbot} />
+      </UserProvider>
     </BrowserRouter>
   );
 }
