@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Recommendation.css';
 import SolutionCard from './SolutionCard';
+import { UserContext } from "./UserContext.jsx";
 
 import aerobics from '../imgSolution/aquaAerobics_low.jpeg';
 import badminton from '../imgSolution/badminton_medium.png';
@@ -33,6 +34,9 @@ import vegeSoup from '../imgSolution/vegeSoup.jpeg';
 import stirFriedVege from '../imgSolution/stirFriedVege.jpeg';
 
 const Recommendation = () => {
+
+    const { userid } = useContext(UserContext);  // 전역 userid 가져오기
+
     const [inbodyData, setInbodyData] = useState({
         body_fat_percentage: null,
         gender: ''
@@ -57,7 +61,7 @@ const Recommendation = () => {
         };
 
         fetchInbodyData();
-    }, []);
+    }, [userid]);
 
     const lowIntensityExercises = [
         { title: '걷기', imgSrc: walkL, description: '- 하루 30분 ~ 1시간\n- 심폐 기능을 개선하고 혈액 순환을 촉진하는 저강도 운동입니다.'},

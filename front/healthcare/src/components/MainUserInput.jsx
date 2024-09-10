@@ -29,7 +29,7 @@ const MainUserInput = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),  // formData를 JSON 형식으로 변환하여 전송
+                body: JSON.stringify(formData),
             });
 
             if (response.ok) {
