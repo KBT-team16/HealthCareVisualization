@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './MainUserInput.css';
 
 const MainUserInput = () => {
+    
     return (
         <form className='userInput'>
             <h3>오늘의 상태 입력</h3>
 
             <div className='inBlock'>
                 <label>체중 : 
-                    <input type="text" placeholder='체중을 입력하세요' />
+                    <input type="text" placeholder='체중을 입력하세요' name="weight" />
                 </label>
                 <label>키 : 
-                    <input type="text" placeholder='키를 입력하세요' />
+                    <input type="text" placeholder='키를 입력하세요' name="" />
                 </label>
             </div>
 
@@ -19,10 +20,10 @@ const MainUserInput = () => {
 
             <div className='inBlock'>
                 <label>오늘의 식단 : 
-                    <input type="text" placeholder="식단을 입력하세요" />
+                    <input type="text" placeholder="식단을 입력하세요" name="diet" />
                 </label>
                 <label>오늘의 운동 : 
-                    <input type="text" placeholder='운동을 입력하세요' />
+                    <input type="text" placeholder='운동을 입력하세요' name="exercise" />
                 </label>
             </div>
 

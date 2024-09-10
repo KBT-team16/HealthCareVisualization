@@ -29,6 +29,7 @@ h6 {
     font-size: 12px;
     color: #666;
     margin-bottom: 15px;
+    text-align: right; /* 오른쪽 정렬 */
 }
 
 .subitButton {
@@ -40,8 +41,10 @@ h6 {
     border-radius: 4px;
     padding: 3px 6px;
     cursor: pointer;
+    display: block; /* 블록 요소로 변경 */
+    margin: 0 auto; /* 가로 정렬을 중앙으로 */
 }
 
 button:hover {
-    background-color: #0077b6;
+    background-color: #005f8a;
 }
