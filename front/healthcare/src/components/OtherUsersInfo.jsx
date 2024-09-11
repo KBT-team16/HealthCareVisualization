@@ -22,7 +22,7 @@ const OtherUsersInfo = () => {
         const fetchMembers = async () => {
           try {
             // 백엔드 API로부터 데이터를 받아오는 부분
-            const response = await fetch('https://your-backend-api-url/members');
+            const response = await fetch('https:/localhost:8080/api/physical-stats/random');
             const data = await response.json();
             
             // 받아온 데이터를 상태로 저장 (첫 번째 그룹)

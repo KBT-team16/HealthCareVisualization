@@ -52,9 +52,7 @@ export default function EditProfile() {
   }
 
   return (
-    <div className="navbar">
-      <h2>회원정보 수정</h2>
-      <div className="navbar-links">
+      <>
         <label>
           키 (cm):
           <input
@@ -80,7 +78,6 @@ export default function EditProfile() {
             저장
           </button>
         </div>
-      </div>
-    </div>
+    </>
   );
 }

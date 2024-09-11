@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/Navbar.css";
 import apiClient from "../components/AxiosInterceptor";
+import EditProfile from "./EditProfile";
 
 export default function Mypage() {
   const navigate = useNavigate();
@@ -64,21 +65,16 @@ export default function Mypage() {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-logo">
-        <a href="/">홈</a>
+    <div className="body">
+        <div className="body-container"  style={{marginBottom:"130px"}}>
+          <EditProfile />
+        </div>
       </div>
-      <div className="navbar-links">
-        <button onClick={handleEditProfile} className="navbar-link">
-          회원정보 수정
-        </button>
-        <button onClick={handleInBodyHistory} className="navbar-link">
-          인바디 히스토리 조회
-        </button>
+  );
+}
+
+/*
         <button onClick={handleLogout} className="navbar-link logout-button">
           로그아웃
         </button>
-      </div>
-    </nav>
-  );
-}
+        */

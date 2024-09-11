@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../components/AxiosInterceptor";
-
 import "../components/inbody.css";
+import './analyze.css';
 
 export default function InBodyHistory() {
   const [inBodyHistories, setInBodyHistories] = useState([]); // 인바디 히스토리 상태
@@ -42,67 +42,69 @@ export default function InBodyHistory() {
   }
 
   return (
-    <div className="container">
-      <h2 className="inbody-title">인바디 히스토리</h2>
-      <div className="inbody-table-container">
-        {inBodyHistories.length > 0 ? (
-          <>
-            <table className="inbody-table">
-              <thead>
-                <tr>
-                  <th>날짜</th>
-                  <th>체지방률 (%)</th>
-                  <th>근육량 (kg)</th>
-                  <th>BMI</th>
-                  <th>인바디 점수</th>
-                </tr>
-              </thead>
-              <tbody>
-                {inBodyHistories.map((entry, index) => (
-                  <tr
-                    key={index}
-                    onClick={() => handleRowClick(entry)}
-                    className="clickable-row"
-                  >
-                    <td>
-                      {new Date(entry.evaluationDate).toLocaleDateString()}
-                    </td>
-                    <td>{entry.bodyFatPercentage}</td>
-                    <td>{entry.muscleMass}</td>
-                    <td>{entry.bmi}</td>
-                    <td>{entry.score}</td>
+    <div className="body" style={{marginTop:"100px"}}>
+      <div className="body-container">
+        <h2 className="inbody-title">인바디 히스토리</h2>
+        <div className="inbody-table-container">
+          {inBodyHistories.length > 0 ? (
+            <>
+              <table className="inbody-table">
+                <thead>
+                  <tr>
+                    <th>날짜</th>
+                    <th>체지방률 (%)</th>
+                    <th>근육량 (kg)</th>
+                    <th>BMI</th>
+                    <th>인바디 점수</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {inBodyHistories.map((entry, index) => (
+                    <tr
+                      key={index}
+                      onClick={() => handleRowClick(entry)}
+                      className="clickable-row"
+                    >
+                      <td>
+                        {new Date(entry.evaluationDate).toLocaleDateString()}
+                      </td>
+                      <td>{entry.bodyFatPercentage}</td>
+                      <td>{entry.muscleMass}</td>
+                      <td>{entry.bmi}</td>
+                      <td>{entry.score}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
 
-            {/* 선택된 히스토리의 자세한 정보를 표시 */}
-            {selectedHistory && (
-              <div className="inbody-details">
-                <h3>상세 정보</h3>
-                <p>
-                  날짜:{" "}
-                  {new Date(
-                    selectedHistory.evaluationDate
-                  ).toLocaleDateString()}
-                </p>
-                <p>체지방률: {selectedHistory.bodyFatPercentage}%</p>
-                <p>근육량: {selectedHistory.muscleMass} kg</p>
-                <p>BMI: {selectedHistory.bmi}</p>
-                <p>인바디 점수: {selectedHistory.score}</p>
-                {/* 닫기 버튼 추가 */}
-                <button
-                  onClick={() => setSelectedHistory(null)}
-                  className="close-button"
-                >
-                  닫기
-                </button>
-              </div>
-            )}
-          </>
-        ) : (
-          <p className="no-data">인바디 히스토리가 없습니다.</p>
-        )}
+              {/* 선택된 히스토리의 자세한 정보를 표시 */}
+              {selectedHistory && (
+                <div className="inbody-details">
+                  <h3>상세 정보</h3>
+                  <p>
+                    날짜:{" "}
+                    {new Date(
+                      selectedHistory.evaluationDate
+                    ).toLocaleDateString()}
+                  </p>
+                  <p>체지방률: {selectedHistory.bodyFatPercentage}%</p>
+                  <p>근육량: {selectedHistory.muscleMass} kg</p>
+                  <p>BMI: {selectedHistory.bmi}</p>
+                  <p>인바디 점수: {selectedHistory.score}</p>
+
+                  <button
+                    onClick={() => setSelectedHistory(null)}
+                    className="closeButton"
+                  >
+                    상세정보 닫기
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <p className="no-data">인바디 히스토리가 없습니다.</p>
+          )}
+        </div>
       </div>
     </div>
   );

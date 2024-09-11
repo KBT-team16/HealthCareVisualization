@@ -6,13 +6,15 @@ import "./analyze.css";
 
 function Mainpage() {
   return (
-    <div className="body">
-      <div className="body-container" style={{marginBottom:"130px"}}>
-        <MainUserInput />
+      <div className="body">
+        <div className="body-container"  style={{marginBottom:"130px"}}>
+            <MainUserInput />
+        </div>
+        <div>
+            <JwtFetcher />
+            <OtherUsersInfo />
+        </div>
       </div>
-      <OtherUsersInfo />
-      <JwtFetcher />
-    </div>
   );
 }
 

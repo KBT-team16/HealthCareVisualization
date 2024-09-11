@@ -24,9 +24,9 @@ function SignUp() {
     }
   }, [navigate]);
   return (
-    <div>
-      <div className="login-container">
-        <form>
+    <div className="body">
+      <div className="body-container">
+        <form className="login_form">
           <div className="input-container">
             <h2>로그인</h2>
             <hr className="divider" />

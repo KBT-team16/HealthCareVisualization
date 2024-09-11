@@ -18,7 +18,7 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
         // 나이 데이터를 먼저 가져오기
 
         // 환경변수 처리하기 : http://localhost:8080/
-        fetch('http://localhost:8080/inbody-data/first')
+        fetch('http://localhost:8080/api/inbody-data/first')
             .then(response => response.json())
             .then(data => {
                 const currentYear = new Date().getFullYear();
@@ -30,13 +30,13 @@ const ComparisonChart = ({ onPercentileCalculated }) => {
                 console.error("Error fetching age and inbody score data:", error);
                 setLoading(false);
             });
-    }, [userid]);
+    }, []);
 
     useEffect(() => {
         if (age !== null && myInbodyScore !== null) {
             // 나이에 따른 API 주소 결정
             const ageGroup = Math.floor(age / 10) * 10; // 10대, 20대, 30대 등으로 그룹화
-            const apiUrl = `http://localhost:8080/inbody-data/${ageGroup}`;
+            const apiUrl = `http://localhost:8080/api/inbody-data/${ageGroup}`;
 
             // API에서 인바디 데이터 가져오기
             fetch(apiUrl)

@@ -11,7 +11,7 @@ const InbodyChart = () => {
     const [chartOptions, setChartOptions] = useState({});
 
     useEffect(() => {
-        fetch('http://localhost:8080/inbody-data/first')
+        fetch('http://localhost:8080/api/inbody-data/first')
             .then(response => response.json())
             .then(data => {
                 const weight = parseFloat(data.weight);

@@ -3,7 +3,8 @@ import { UserContext } from "./UserContext.jsx";
 import './MainUserInput.css';
 
 const MainUserInput = () => {
-    const { userid } = useContext(UserContext);  // 전역 userid 가져오기
+    //const { userid } = useContext(UserContext);  // 전역 userid 가져오기
+    const userid = 8;
     const [weight, setWeight] = useState('');
     const [height, setHeight] = useState('');
     const [diet, setDiet] = useState('');
@@ -15,16 +16,16 @@ const MainUserInput = () => {
 
         // 보내려는 데이터 객체 생성
         const formData = {
-            userid,  // 전역 userid 포함
-            weight: weight || 'defaultWeight', // 키를 입력하지 않았을 경우 기본 값
-            height: height || 'defaultHeight', // 체중을 입력하지 않았을 경우 기본 값
-            diet,
-            exercise,
+            memberId: userid,  // 전역 userid 포함
+            weight: parseFloat(weight), // 숫자로 변환하거나 null 값 처리
+            height: parseFloat(height), // 숫자로 변환하거나 null 값 처리
+            mealPlan: diet,
+            exerciseType: exercise,
         };
-
+        
         try {
             // 백엔드에 POST 요청 보내기 (예: /api/submit에 POST 요청)
-            const response = await fetch('/api/submit', {  // 적절한 API 엔드포인트 설정
+            const response = await fetch('http://localhost:8080/api/physical-stats', {  // 적절한 API 엔드포인트 설정
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ const MainUserInput = () => {
     };
 
     return (
-        <form className='userInput' onSubmit={handleSubmit}>
+        <form className='todayUserInput' onSubmit={handleSubmit}>
             <h3>오늘의 상태 입력</h3>
 
             <div className='inBlock'>

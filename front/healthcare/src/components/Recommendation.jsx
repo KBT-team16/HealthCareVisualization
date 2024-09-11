@@ -46,9 +46,10 @@ const Recommendation = () => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
+        console.log('나 실행중 ㅎㅎ')
         const fetchInbodyData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/inbody-data/first');
+                const response = await fetch('http://localhost:8080/api/inbody-data/first');
                 const data = await response.json();
 
                 setInbodyData({
